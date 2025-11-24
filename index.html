@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fresin Member Manager</title>
+  <style>
+    * { box-sizing:border-box; font-family:Inter,Segoe UI,Roboto,Arial,sans-serif }
+    body { margin:0; background:#f6f8ff; color:#222 }
+    .header { background:linear-gradient(90deg,#1e73d6,#3aa0ff); color:#fff; padding:18px 28px; display:flex; align-items:center; gap:16px; box-shadow:0 2px 0 rgba(0,0,0,0.06) }
+    .donut { width:48px;height:48px;background:#fff;border-radius:50%; display:flex;align-items:center;justify-content:center; color:#ffb84d;font-weight:700 }
+    .container { max-width:1300px; margin:22px auto; padding:12px }
+
+    /* WRAPPER BLUE */
+.searchWrap {
+  background:#0d9ff2;        /* biru seperti contoh */
+  padding:18px;
+  border-radius:12px;
+  width:100%;
+  margin-bottom:18px;
+}
+
+/* INPUT PUTIH */
+.search input {
+  width:93%;
+  padding:16px;
+  padding-right:80px;   /* ← tambahkan ini */
+  border-radius:10px;
+  border:none;
+  outline:none;
+  font-size:16px;
+  background:#fff;
+  box-shadow:none;
+  font-weight:700;
+}
+
+
+/* BUTTON KUNING */
+.search button {
+  background:#ffd350;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  box-shadow:none;
+  height: 70px;           /* samakan dengan tinggi input */
+  width:70px;            /* persegi agar simetris */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;         /* agar ikon di tengah sempurna */
+  padding:0;              /* hapus padding agar benar-benar simetris */
+}
+.search {
+  position: relative;
+}
+
+.search button {
+  position: absolute;
+  right: 15px;           /* jarak dari kanan */
+  top: 50%;
+  transform: translateY(-50%);
+  height: 50px;
+  width: 50px;
+  border-radius: 10px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+
+
+    .search input {
+  font-weight: 700;   /* bold */
+  font-size: 18px;     /* lebih besar */
+}
+
+.item.clicked {
+  background:#dceaff; 
+  transition: background 0.15s ease;
+}
+
+
+    .layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3 kolom */
+  gap: 22px;
+}
+
+.left {
+  background: #06A7FF;
+  padding: 20px;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.middle {
+  background:#ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.right {
+  width: 100%;
+    background:#ffffff;
+  padding:20px;
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.sectionTitle {
+  background: #06A7FF;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  padding: 14px 0;
+  border-radius: 12px;
+  margin-bottom: 22px;
+  width: 100%;
+}
+
+
+
+    #memberAvatar { width:100%; height:230px; background:#fdf6e8; border-radius:14px; overflow:hidden; display:flex; align-items:center; justify-content:center; margin-bottom:18px }
+    #memberAvatar img { width:100%; height:100%; object-fit:cover }
+
+    .field { background:#E5F4FF; border-radius:12px; padding:12px 16px; margin-bottom:14px; border:1px solid #faf0dd; text-align:center; box-shadow:0 4px 14px rgba(0,0,0,0.05) }
+    .field .label { font-size:11px;color:#888; letter-spacing:1px }
+    .field .value { font-size:18px; font-weight:700; margin-top:6px }
+
+    .statGrid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:22px }
+    .statCard { background:#E5F4FF; padding:16px; border-radius:12px; border:1px solid #edf2ff; box-shadow:0 6px 14px rgba(0,0,0,0.06) }
+    .k { font-size:12px; color:#666 }
+    .v { font-size:16px; font-weight:700; margin-top:8px }
+
+    .actions { background:#fff; border-radius:12px; padding:14px; border:1px solid #edf5ff; box-shadow:0 6px 14px rgba(0,0,0,0.06) }
+    .actionRow { display:flex; gap:12px; margin-top:10px }
+    .btn { flex:1; padding:14px; border-radius:10px; border:0; cursor:pointer; font-weight:700; font-size:15px }
+    .btn.green { background:#b9f7cc; border:1px solid #9fe8b9 }
+    .btn.disabled { opacity:.5; cursor:not-allowed }
+    .btn.press { transform: scale(0.92); box-shadow:0 0 12px rgba(0,0,0,0.15); transition: 0.12s ease; }
+
+    .dropdown { position:absolute; left:0; right:0; background:#fff; border-radius:10px; padding:6px; border:1px solid #eee; max-height:260px; overflow:auto; z-index:50; display:none; box-shadow:0 8px 20px rgba(0,0,0,0.10) }
+
+    .item {
+  padding: 8px 12px;
+  display: grid;
+  grid-template-columns: 50px auto auto; /* avatar | nama | nomor kanan */
+  gap: 5px;
+  align-items: center;
+  border-radius: 6px;
+  cursor: pointer;
+}
+    .item:hover { background:#f5f8ff }
+    .smallAvatar { width:40px; height:40px; overflow:hidden; border-radius:6px }
+    .smallAvatar img { width:100%; height:100%; object-fit:cover }
+    .itemName {
+  font-size: 22px;
+  font-weight: 800;
+  color: #333;
+}
+
+.itemWA {
+  font-size: 20px;
+  font-weight: 500;
+  color: #777;
+  text-align: right;
+  white-space: nowrap;
+}
+
+
+    .history { margin-top:12px; background:#E5F4FF; border-radius:10px; padding:12px; border:1px solid #f2f2f2; box-shadow:0 4px 12px rgba(0,0,0,0.05) }
+    .historyItem { padding:8px; border-bottom:1px dashed #eaeaea }
+    .notify { position: fixed; top: 20px; right: 20px; background:#4caf50; color:white; padding:12px 16px; border-radius:10px; box-shadow:0 6px 15px rgba(0,0,0,0.15); opacity:0; transform:translateY(-10px); transition:0.2s ease; z-index:9999 }
+    .notify.show { opacity:1; transform:translateY(0) }
+
+    @media(max-width:900px) { .layout { flex-direction:column } .left{ width:100% } .right{ width:100% } }
+
+    .loadingSpinner {
+  position: absolute;
+  right: 95px;
+  top: 50%;
+  width: 35px;
+  height: 35px;
+  border: 3px solid #ccc;
+  border-top-color: #1e73d6;
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+  transform: translateY(-50%);
+  display: none;
+}
+
+.spinnerSmall {
+  position: absolute;          /* 🔥 WAJIB */
+  top: 50%;                    /* 🔥 center vertical */
+  left: 50%;                   /* 🔥 center horizontal */
+  transform: translate(-50%, -50%);   /* 🔥 agar tepat di tengah */
+
+  width: 40px;
+  height: 40px;
+
+  border: 4px solid rgba(255,255,255,0.5);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+
+  z-index: 5; /* pastikan di atas tombol */
+}
+
+
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Kolom kiri selalu mengikuti tinggi kolom tengah */
+.left {
+  display: flex;
+  flex-direction: column;
+}
+
+
+#memberAvatar {
+  width: 100%;
+  height: 540px;
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;      /* penting untuk spinner di tengah */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#memberAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  border-radius: 14px;
+}
+
+/* BIAR SPINNER BISA POSISI TENGAH */
+#memberAvatar {
+  position: relative;   /* WAJIB untuk spinner center */
+}
+
+#avatarSpinner {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 6px solid #ccc;
+  border-top-color: #1e73d6;
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ANIMASI PUTAR */
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.actionTitle {
+  margin-top: 40px;
+  text-align: center;   /* 🔥 ini yang membuat tulisan berada di tengah */
+  font-size: 20px;
+  font-weight: 700;
+  background: #06A7FF;
+  color: white;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+
+.actionButtons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 10px; /* jarak tetap */
+}
+
+/* tombol kuning */
+.btnAction {
+  width: 210px;
+  height: 140px;
+  background: #F9D24D;
+  border: none;
+  border-radius: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform .15s, background .15s;
+
+  position: relative;   /* 🔥 WAJIB supaya spinner bisa center */
+}
+
+/* lingkaran icon putih */
+.btnAction .icon {
+  width: 45px;
+  height: 45px;
+  background: white;
+  border-radius: 50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 25px;   /* sedikit diperbesar agar proporsional */
+}
+
+/* teks 2 baris (center) */
+.btnAction .text {
+  font-size: 18px;    /* disesuaikan agar pas 3 baris total */
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  line-height: 20px;
+}
+
+.btnAction:hover {
+  background: #f7c633;
+}
+
+.btnAction:active {
+  transform: scale(0.93);
+}
+
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="searchWrap">
+  <div class="search">
+    <div style="flex:0 0 90%; position:relative">
+      <input id="q" placeholder="Cari nama ..."/>
+      <div id="spinner" class="loadingSpinner"></div>
+      <div id="dropdown" class="dropdown"></div>
+    </div>
+    <button id="searchBtn">🔍</button>
+  </div>
+</div>
+
+   <div class="layout">
+
+  <!-- KOLOM 1: FRAME BIRU + FOTO MEMBER -->
+<div class="left">
+    <div id="memberAvatar">
+        <div id="avatarSpinner"></div>
+    </div>
+</div>
+
+
+  <!-- KOLOM 2: DATA MEMBER -->
+<div class="middle">
+
+  <div class="sectionTitle">Data Member</div>
+
+  <div class="field">
+    <div class="label">NAMA MEMBER</div>
+    <div class="value" id="memberName">-</div>
+  </div>
+
+  <div class="field">
+    <div class="label">WHATSAPP</div>
+    <div class="value" id="memberWA">-</div>
+  </div>
+
+  <div class="field">
+    <div class="label">TANGGAL DAFTAR</div>
+    <div class="value" id="memberDaftar">-</div>
+  </div>
+
+  <!-- BAGIAN AKSI MEMBER -->
+  <div class="actionBox">
+
+    <div class="actionTitle">Aksi Member</div>
+
+    <div class="actionButtons">
+
+      <button class="btnAction" id="btnTambahStamp">
+  <span class="icon">🧾</span>
+  <span class="text">Tambah<br>Stamp</span>
+</button>
+
+<button class="btnAction" id="btnPerpanjang">
+  <span class="icon">⏳</span>
+  <span class="text">Perpanjang<br>Expired</span>
+</button>
+
+
+    </div> <!-- END actionButtons -->
+
+  </div> <!-- END actionBox -->
+
+</div> <!-- END middle -->
+
+
+  <!-- KOLOM 3: STATISTIK MEMBER -->
+  <div class="right">
+    <div class="sectionTitle">Statistik Member</div>
+
+    <div class="statGrid">
+      <div class="statCard">
+        <div class="k">Tanggal Expired</div>
+        <div class="v" id="statExpired">--</div>
+      </div>
+
+      <div class="statCard">
+        <div class="k">Stamp Bulan Ini</div>
+        <div class="v" id="statStampBulan">--</div>
+      </div>
+
+      <div class="statCard">
+        <div class="k">Total Stamp</div>
+        <div class="v" id="statTotalStamp">--</div>
+      </div>
+
+      <div class="statCard">
+        <div class="k">Status Member</div>
+        <div class="v" id="statStatus">--</div>
+      </div>
+    </div>
+
+    <div class="history" id="historyArea">
+      <div style="font-weight:700;margin-bottom:8px;">Riwayat Terakhir</div>
+      <div id="historyList">Tidak ada riwayat</div>
+    </div>
+  </div>
+
+</div>
+<div id="notif" class="notify"></div>
+
+
+<script>
+  // GANTI INI JIKA PERLU: saya isi dengan URL WebApp yang kamu berikanapi
+  const API_BASE = 'https://script.google.com/macros/s/AKfycbzOlq9w63zP9CkMy81t6DkzuOra-2GFALZBiYRvHubH4ssNV8rrox5OuJdGm6-7LN_1Xg/exec';
+
+  const dropdown = document.getElementById('dropdown');
+  const q = document.getElementById('q');
+  const spinner = document.getElementById('spinner');
+  let typingTimer = null;
+  let currentMember = null;
+
+  // fast search (debounce small)
+  q.addEventListener('input', () => {
+    clearTimeout(typingTimer);
+    const v = q.value.trim();
+    if (!v) { dropdown.style.display = 'none'; return; }
+    typingTimer = setTimeout(() => {
+  spinner.style.display = 'block';
+
+  fetch(API_BASE + '?action=search&query=' + encodeURIComponent(v))
+    .then(r => r.json())
+    .then(js => {
+      spinner.style.display = 'none';
+      renderDropdown(js.results || []);
+    })
+    .catch(err => {
+      spinner.style.display = 'none';
+      renderDropdown([]);
+    });
+}, 120);
+  });
+
+  function renderDropdown(list) {
+  dropdown.innerHTML = '';
+  if (!list.length) {
+    dropdown.style.display = 'none';
+    return;
+  }
+
+  list.forEach(it => {
+    const div = document.createElement('div');
+    div.className = 'item';
+
+    div.innerHTML =
+      `
+      <div class="smallAvatar">
+        <img src="${it.photo || ''}" onerror="this.style.display='none'">
+      </div>
+
+      <div class="itemName">
+        ${safe(it.name)}
+      </div>
+
+      <div class="itemWA">
+        ${safe(it.whatsapp)}
+      </div>
+      `;
+
+    div.onclick = () => {
+      div.classList.add('clicked');
+      setTimeout(() => div.classList.remove('clicked'), 150);
+
+      showMemberLoading();
+      selectMember(it.whatsapp);
+    };
+
+    dropdown.appendChild(div);
+  });
+
+  dropdown.style.display = 'block';
+}
+
+function showMemberLoading() {
+
+  document.getElementById('memberName').innerHTML = '-';
+  document.getElementById('memberWA').innerHTML = '-';
+  document.getElementById('memberDaftar').innerHTML = '-';
+  document.getElementById('statExpired').innerHTML = '--';
+  document.getElementById('statStampBulan').innerHTML = '--';
+  document.getElementById('statTotalStamp').innerHTML = '--';
+  document.getElementById('statStatus').innerHTML = '--';
+
+  const avatar = document.getElementById("memberAvatar");
+
+  // Hapus HANYA foto besar, jangan hapus semua <img>
+  const oldPhoto = avatar.querySelector("img");
+  if (oldPhoto) oldPhoto.remove();
+
+  // Tampilkan spinner
+  document.getElementById("avatarSpinner").style.display = "block";
+
+  // Jangan disable tombol secara permanen
+  document.getElementById('btnTambahStamp').classList.add('disabled');
+
+  // Tutup dropdown biar tidak freeze
+  dropdown.style.display = "none";
+}
+
+
+
+
+  function selectMember(wa) {
+    dropdown.style.display = 'none';
+    fetch(API_BASE + '?action=getMember&wa=' + encodeURIComponent(wa))
+      .then(r => {
+        if (!r.ok) throw new Error('getMember response not ok ' + r.status);
+        return r.json();
+      })
+      .then(m => {
+        if (!m || m.error) {
+          console.warn('member not found', m);
+          showNotif('Member tidak ditemukan');
+          return;
+        }
+        currentMember = m;
+        renderMember(m);
+      })
+      .catch(err => {
+        console.warn('getMember failed:', err);
+        showNotif('Gagal ambil data member');
+      });
+  }
+
+  function renderMember(m) {
+
+    /* ============================
+       EXPIRED (format tanggal)
+    ============================ */
+    if (m.expired) {
+    // m.expired dalam format DD/MM/YYYY → split manual
+    const parts = m.expired.split('/');
+    if (parts.length === 3) {
+        const d = new Date(parts[2], parts[1]-1, parts[0]); // YYYY, MM, DD
+        document.getElementById('statExpired').innerHTML =
+            d.toLocaleDateString("id-ID");
+    } else {
+        document.getElementById('statExpired').innerHTML = m.expired;
+    }
+} else {
+    document.getElementById('statExpired').innerHTML = '--';
+}
+
+
+    /* ============================
+       DATA DASAR MEMBER
+    ============================ */
+    document.getElementById('memberName').innerHTML = safe(m.name || '-');
+    document.getElementById('memberWA').innerHTML = safe(m.whatsapp || '-');
+    document.getElementById('memberDaftar').innerHTML = safe(m.tanggalDaftar || '-');
+    document.getElementById('statStampBulan').innerHTML = (m.stampBulan == null) ? 0 : m.stampBulan;
+    document.getElementById('statTotalStamp').innerHTML = (m.totalStamp == null) ? 0 : m.totalStamp;
+    document.getElementById('statStatus').innerHTML = safe(m.status || '--');
+    document.getElementById('btnTambahStamp').classList.remove('disabled');
+    document.getElementById("avatarSpinner").style.display = "none";
+
+    /* ============================
+       LOCK / UNLOCK TOMBOL STAMP
+    ============================ */
+    const btnStamp = document.getElementById("btnTambahStamp");
+
+    if (m.status === "TIDAK AKTIF") {
+        btnStamp.style.opacity = "0.4";
+        btnStamp.style.pointerEvents = "none";
+    } else {
+        btnStamp.style.opacity = "1";
+        btnStamp.style.pointerEvents = "auto";
+    }
+
+    /* ============================
+       FOTO MEMBER + SPINNER
+    ============================ */
+    const avatar = document.getElementById('memberAvatar');
+    const spinner = document.getElementById('avatarSpinner');
+
+    // Hapus foto lama
+    const oldImg = avatar.querySelector("img");
+    if (oldImg) oldImg.remove();
+
+    // Tampilkan spinner
+    if (spinner) spinner.style.display = "block";
+
+    if (m.photo) {
+        const img = document.createElement('img');
+        img.src = m.photo;
+        img.alt = 'Foto Member';
+
+        img.onload = () => {
+            if (spinner) spinner.style.display = "none";
+        };
+
+        img.onerror = () => {
+            if (spinner) spinner.style.display = "none";
+            avatar.innerHTML = '<div style="color:#c9a;padding:8px">Foto Member</div>';
+        };
+
+        avatar.appendChild(img);
+    } else {
+        if (spinner) spinner.style.display = "none";
+        avatar.innerHTML = '<div style="color:#c9a;padding:8px">Foto Member</div>';
+    }
+
+    /* ============================
+       HISTORY TERBARU
+    ============================ */
+    renderHistory(m.last4 || m.last3 || []);
+}
+
+  function renderHistory(list) {
+    const box = document.getElementById('historyList');
+    box.innerHTML = '';
+    if (!list.length) { box.innerHTML = 'Tidak ada riwayat'; return; }
+    list.forEach((it, i) => {
+      const div = document.createElement('div');
+      div.className = 'historyItem';
+      div.innerHTML = '<div><strong>' + (i+1) + '. ' + safe(it.aksi) + '</strong></div>' +
+                      '<div style="color:#777">' + safe(it.timestamp) + ' — Jumlah: ' + (it.jumlah||0) + '</div>';
+      box.appendChild(div);
+    });
+  }
+
+  // notif
+  function showNotif(text) {
+    const n = document.getElementById('notif');
+    n.textContent = text;
+    n.classList.add('show');
+    setTimeout(() => n.classList.remove('show'), 2200);
+  }
+
+  function safe(s) {
+    if (s == null) return '';
+    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
+  }
+</script>
+
+<div id="popupRenew" style="
+  position: fixed;
+  top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+">
+
+  <div style="
+    background: white;
+    padding: 22px;
+    border-radius: 14px;
+    width: 340px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    text-align: center;
+  ">
+    <div style="font-size:18px;font-weight:700;margin-bottom:18px;">
+      Perpanjang masa expired?
+    </div>
+
+    <button id="renewYes" style="
+      background:#4caf50;
+      color:white;
+      padding:12px;
+      width:100%;
+      border:none;
+      border-radius:10px;
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+      margin-bottom:10px;
+    ">Ya</button>
+
+    <button id="renewNo" style="
+      background:#ccc;
+      padding:12px;
+      width:100%;
+      border:none;
+      border-radius:10px;
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+    ">Tidak</button>
+  </div>
+</div>
+
+<!-- ================== POPUP TAMBAH STAMP ================== -->
+<div id="popupStamp" style="
+  position: fixed;
+  top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+">
+  <div style="
+    background: white;
+    padding: 22px;
+    border-radius: 14px;
+    width: 340px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    text-align: center;
+  ">
+    <div style="font-size:18px;font-weight:700;margin-bottom:18px;">
+      Tambah stamp untuk member ini?
+    </div>
+
+    <button id="stampYes" style="
+      background:#4caf50; color:white; padding:12px; width:100%;
+      border:none; border-radius:10px; font-size:16px; font-weight:600;
+      cursor:pointer; margin-bottom:10px;
+    ">Ya</button>
+
+    <button id="stampNo" style="
+      background:#ccc; padding:12px; width:100%;
+      border:none; border-radius:10px; font-size:16px; font-weight:600;
+      cursor:pointer;
+    ">Tidak</button>
+  </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* ============================================================
+     TOMBOL PERPANJANG EXPIRED — TAMPILKAN POPUP
+  ============================================================ */
+  const btnPerpanjang = document.getElementById('btnPerpanjang');
+  const popupRenew = document.getElementById('popupRenew');
+  const renewYes = document.getElementById('renewYes');
+  const renewNo = document.getElementById('renewNo');
+
+  btnPerpanjang.onclick = () => {
+    if (!currentMember) return;
+    popupRenew.style.display = "flex";
+  };
+
+  renewNo.onclick = () => popupRenew.style.display = "none";
+
+  renewYes.onclick = async () => {
+    popupRenew.style.display = "none";
+
+    const btn = btnPerpanjang;
+    const originalHTML = btn.innerHTML;
+
+    btn.innerHTML = `<div class="spinnerSmall"></div>`;
+    btn.style.opacity = "0.7";
+    btn.style.pointerEvents = "none";
+    btn.style.display = "flex";
+    btn.style.alignItems = "center";
+    btn.style.justifyContent = "center";
+
+    showNotif("Memperpanjang masa langganan...");
+
+    try {
+      const fd = new FormData();
+fd.append("action", "renew");
+fd.append("wa", currentMember.whatsapp);
+
+const res = await fetch(API_BASE, {
+  method: "POST",
+  body: fd
+});
+
+
+      const updated = await res.json();
+
+      if (!updated || updated.error) {
+        showNotif("Gagal memperpanjang");
+      } else {
+        currentMember = updated;
+        renderMember(updated);
+        showNotif("PERPANJANG EXPIRED BERHASIL");
+      }
+
+    } catch (err) {
+      showNotif("Gagal terhubung ke server");
+    }
+
+    btn.innerHTML = originalHTML;
+    btn.style.opacity = "1";
+    btn.style.pointerEvents = "auto";
+  };
+
+
+  /* ============================================================
+     POPUP TAMBAH STAMP
+  ============================================================ */
+  const btnStamp = document.getElementById('btnTambahStamp');
+  const popupStamp = document.getElementById('popupStamp');
+  const stampYes = document.getElementById('stampYes');
+  const stampNo = document.getElementById('stampNo');
+
+  btnStamp.onclick = () => {
+    if (!currentMember) return;
+    popupStamp.style.display = "flex";
+  };
+
+  stampNo.onclick = () => popupStamp.style.display = "none";
+
+  stampYes.onclick = async () => {
+    popupStamp.style.display = 'none';
+
+    const btn = btnStamp;
+    const originalHTML = btn.innerHTML;
+
+    btn.classList.add('press');
+    setTimeout(() => btn.classList.remove('press'), 120);
+
+    btn.innerHTML = `<div class="spinnerSmall"></div>`;
+    btn.style.opacity = "0.7";
+    btn.style.pointerEvents = "none";
+    btn.style.display = "flex";
+    btn.style.alignItems = "center";
+    btn.style.justifyContent = "center";
+
+    showNotif('Menambahkan stamp...');
+
+    try {
+      const fd = new FormData();
+      fd.append('action', 'addStamp');
+      fd.append('wa', currentMember.whatsapp);
+
+      const res = await fetch(API_BASE + '?action=addStamp', {
+        method: 'POST',
+        body: fd
+      });
+
+      const updated = await res.json();
+
+      if (!updated || updated.error) {
+
+        if (updated && updated.error === "SUDAH_STAMP_HARI_INI") {
+          showNotif("SUDAH STAMP HARI INI");
+          btn.innerHTML = originalHTML;
+          btn.style.opacity = "1";
+          btn.style.pointerEvents = "auto";
+          return;
+        }
+
+        showNotif('Gagal menambah stamp');
+        btn.innerHTML = originalHTML;
+        btn.style.opacity = "1";
+        btn.style.pointerEvents = "auto";
+        return;
+      }
+
+      currentMember = updated;
+      renderMember(updated);
+      showNotif('BERHASIL STAMP');
+
+    } catch (err) {
+      showNotif('Gagal terhubung ke server');
+    }
+
+    btn.innerHTML = originalHTML;
+    btn.style.opacity = "1";
+    btn.style.pointerEvents = "auto";
+  };
+
+});
+</script>
+
+</body>
+</html>
