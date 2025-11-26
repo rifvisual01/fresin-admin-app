@@ -964,53 +964,61 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   searchBtn.onclick = function () {
-    console.log("✅ Tombol diklik");
+  popupKode.style.display = "flex";
 
-    popupKode.style.display = "flex";
-    kodeAktif.innerText = "Loading..";
-kodeAktif.style.fontSize = "25px";   // ✅ hanya loading yang 50px
-kodeAktif.style.color = "#00b050";
+  // Loading 50px
+  kodeAktif.innerText = "Loading...";
+  kodeAktif.style.fontSize = "50px";
+  kodeAktif.style.color = "#00b050";
 
-
-    if (!google || !google.script || !google.script.run) {
-      console.error("❌ google.script.run tidak tersedia");
-      kodeAktif.innerText = "ERR";
-      return;
-    }
-
+  // ✅ JIKA DI GOOGLE APPS SCRIPT
+  if (typeof google !== "undefined" && google.script && google.script.run) {
     google.script.run
       .withSuccessHandler(function (res) {
-        console.log("✅ Respon dari server:", res);
-
         if (res && res.code) {
           kodeAktif.innerText = res.code;
-kodeAktif.style.fontSize = "200px";  // ✅ balik besar
-kodeAktif.style.color = "#00b050";   // ✅ hijau
-
-        } else if (res && res.error) {
-          alert("ERROR SERVER: " + res.error);
-          kodeAktif.innerText = "ERR";
+          kodeAktif.style.fontSize = "200px";
+          kodeAktif.style.color = "#00b050";
         } else {
           kodeAktif.innerText = "ERR";
+          kodeAktif.style.fontSize = "200px";
+          kodeAktif.style.color = "red";
         }
       })
-      .withFailureHandler(function (err) {
-        console.error("❌ Error GAS:", err);
+      .withFailureHandler(function () {
         kodeAktif.innerText = "ERR";
+        kodeAktif.style.fontSize = "200px";
+        kodeAktif.style.color = "red";
       })
       .getActiveCode();
-  };
 
-  popupKode.onclick = function () {
-    popupKode.style.display = "none";
-  };
+  } 
+  
+  // ✅ JIKA DI WEBSITE BIASA / VERCEL
+  else {
+    fetch("https://script.google.com/macros/s/AKfycbwiIUIFZUyBeJrad3inCzt9BrE0Dj4c8tCF1iNmpUC1k9-q4s2WNLQ2kSNOQvpXwDsnnw/exec?action=getActiveCode")
+      .then(res => res.json())
+      .then(js => {
+        if (js && js.code) {
+          kodeAktif.innerText = js.code;
+          kodeAktif.style.fontSize = "200px";
+          kodeAktif.style.color = "#00b050";
+        } else {
+          kodeAktif.innerText = "ERR";
+          kodeAktif.style.fontSize = "200px";
+          kodeAktif.style.color = "red";
+        }
+      })
+      .catch(() => {
+        kodeAktif.innerText = "ERR";
+        kodeAktif.style.fontSize = "200px";
+        kodeAktif.style.color = "red";
+      });
+  }
+};
 
-  boxKode.onclick = function (e) {
-    e.stopPropagation();
-  };
-
-});
 </script>
 
 </body>
 </html>
+
