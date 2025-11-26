@@ -953,72 +953,61 @@ document.addEventListener("DOMContentLoaded", function () {
   const kodeAktif = document.getElementById("kodeAktif");
   const searchBtn = document.getElementById("searchBtn");
 
-  console.log("popupKode:", popupKode);
-  console.log("boxKode:", boxKode);
-  console.log("kodeAktif:", kodeAktif);
-  console.log("searchBtn:", searchBtn);
-
+  // ✅ Validasi elemen
   if (!popupKode || !boxKode || !kodeAktif || !searchBtn) {
-    console.error("❌ ADA ID HTML YANG TIDAK KETEMU — CEK TYPO");
+    console.error("Elemen UI tidak lengkap");
     return;
   }
 
+  // ✅ KLIK TOMBOL CEK KODE (KHUSUS VERCEL)
   searchBtn.onclick = function () {
-  popupKode.style.display = "flex";
+    console.log("✅ Tombol diklik (Vercel)");
 
-  // Loading 50px
-  kodeAktif.innerText = "Loading...";
-  kodeAktif.style.fontSize = "50px";
-  kodeAktif.style.color = "#00b050";
+    popupKode.style.display = "flex";
 
-  // ✅ JIKA DI GOOGLE APPS SCRIPT
-  if (typeof google !== "undefined" && google.script && google.script.run) {
-    google.script.run
-      .withSuccessHandler(function (res) {
-        if (res && res.code) {
-          kodeAktif.innerText = res.code;
-          kodeAktif.style.fontSize = "200px";
-          kodeAktif.style.color = "#00b050";
-        } else {
-          kodeAktif.innerText = "ERR";
-          kodeAktif.style.fontSize = "200px";
-          kodeAktif.style.color = "red";
-        }
-      })
-      .withFailureHandler(function () {
-        kodeAktif.innerText = "ERR";
-        kodeAktif.style.fontSize = "200px";
-        kodeAktif.style.color = "red";
-      })
-      .getActiveCode();
+    // ✅ Loading 50px
+    kodeAktif.innerText = "Loading...";
+    kodeAktif.style.fontSize = "25px";
+    kodeAktif.style.color = "#00b050";
 
-  } 
-  
-  // ✅ JIKA DI WEBSITE BIASA / VERCEL
-  else {
     fetch("https://script.google.com/macros/s/AKfycbwiIUIFZUyBeJrad3inCzt9BrE0Dj4c8tCF1iNmpUC1k9-q4s2WNLQ2kSNOQvpXwDsnnw/exec?action=getActiveCode")
       .then(res => res.json())
       .then(js => {
+        console.log("✅ Respon server:", js);
+
         if (js && js.code) {
           kodeAktif.innerText = js.code;
-          kodeAktif.style.fontSize = "200px";
-          kodeAktif.style.color = "#00b050";
+          kodeAktif.style.fontSize = "130px";   // ✅ balik besar
+          kodeAktif.style.color = "#00b050";   // ✅ hijau
         } else {
           kodeAktif.innerText = "ERR";
-          kodeAktif.style.fontSize = "200px";
+          kodeAktif.style.fontSize = "130px";
           kodeAktif.style.color = "red";
         }
       })
-      .catch(() => {
+      .catch(err => {
+        console.error("❌ Fetch error:", err);
         kodeAktif.innerText = "ERR";
-        kodeAktif.style.fontSize = "200px";
+        kodeAktif.style.fontSize = "130px";
         kodeAktif.style.color = "red";
       });
-  }
-};
+  };
+
+  // ✅ Klik luar popup → tutup
+  popupKode.onclick = function () {
+    popupKode.style.display = "none";
+  };
+
+  // ✅ Klik dalam box → jangan tutup
+  boxKode.onclick = function (e) {
+    e.stopPropagation();
+  };
+
+});
 
 </script>
 
 </body>
 </html>
+
 
