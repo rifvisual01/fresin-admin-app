@@ -22,7 +22,7 @@
 
 /* INPUT PUTIH */
 .search input {
-  width:93%;
+  width:85%;
   padding:16px;
   padding-right:80px;   /* ← tambahkan ini */
   border-radius:10px;
@@ -35,19 +35,16 @@
 }
 
 
-/* BUTTON KUNING */
+/* TOMBOL CEK KODE */
 .search button {
   background:#ffd350;
   border:none;
   border-radius:10px;
   cursor:pointer;
   box-shadow:none;
-  height: 70px;           /* samakan dengan tinggi input */
-  width:70px;            /* persegi agar simetris */
   display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;         /* agar ikon di tengah sempurna */
+  font-size:23px;         /* agar ikon di tengah sempurna */
+  font-weight: 600;
   padding:0;              /* hapus padding agar benar-benar simetris */
 }
 .search {
@@ -56,11 +53,11 @@
 
 .search button {
   position: absolute;
-  right: 15px;           /* jarak dari kanan */
+  right: 7px;           /* jarak dari kanan */
   top: 50%;
   transform: translateY(-50%);
-  height: 50px;
-  width: 50px;
+  height: 60px;
+  width: 160px;
   border-radius: 10px;
   display:flex;
   justify-content:center;
@@ -183,7 +180,7 @@
 
     .loadingSpinner {
   position: absolute;
-  right: 95px;
+  right: 180px;
   top: 50%;
   width: 35px;
   height: 35px;
@@ -355,7 +352,7 @@
       <div id="spinner" class="loadingSpinner"></div>
       <div id="dropdown" class="dropdown"></div>
     </div>
-    <button id="searchBtn">🔍</button>
+    <button id="searchBtn">🔍Cek Kode</button>
   </div>
 </div>
 
@@ -681,6 +678,7 @@ function showMemberLoading() {
     if (s == null) return '';
     return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
   }
+
 </script>
 
 <div id="popupRenew" style="
@@ -903,6 +901,112 @@ const res = await fetch(API_BASE, {
     btn.innerHTML = originalHTML;
     btn.style.opacity = "1";
     btn.style.pointerEvents = "auto";
+  };
+
+});
+</script>
+
+
+
+<!-- ================= POPUP KODE BERLAKU ================= -->
+<div id="popupKode" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+">
+
+  <div id="boxKode" style="
+    background: white;
+    padding: 30px 40px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  ">
+    <div style="
+      font-size: 25px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    ">
+      KODE YANG BERLAKU
+    </div>
+
+    <div id="kodeAktif" style="
+  font-size: 130px;
+  font-weight: 800;
+  line-height: 1;
+  color: #00b050; /* HIJAU */
+">
+      --
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const popupKode = document.getElementById("popupKode");
+  const boxKode   = document.getElementById("boxKode");
+  const kodeAktif = document.getElementById("kodeAktif");
+  const searchBtn = document.getElementById("searchBtn");
+
+  console.log("popupKode:", popupKode);
+  console.log("boxKode:", boxKode);
+  console.log("kodeAktif:", kodeAktif);
+  console.log("searchBtn:", searchBtn);
+
+  if (!popupKode || !boxKode || !kodeAktif || !searchBtn) {
+    console.error("❌ ADA ID HTML YANG TIDAK KETEMU — CEK TYPO");
+    return;
+  }
+
+  searchBtn.onclick = function () {
+    console.log("✅ Tombol diklik");
+
+    popupKode.style.display = "flex";
+    kodeAktif.innerText = "Loading..";
+kodeAktif.style.fontSize = "25px";   // ✅ hanya loading yang 50px
+kodeAktif.style.color = "#00b050";
+
+
+    if (!google || !google.script || !google.script.run) {
+      console.error("❌ google.script.run tidak tersedia");
+      kodeAktif.innerText = "ERR";
+      return;
+    }
+
+    google.script.run
+      .withSuccessHandler(function (res) {
+        console.log("✅ Respon dari server:", res);
+
+        if (res && res.code) {
+          kodeAktif.innerText = res.code;
+kodeAktif.style.fontSize = "200px";  // ✅ balik besar
+kodeAktif.style.color = "#00b050";   // ✅ hijau
+
+        } else if (res && res.error) {
+          alert("ERROR SERVER: " + res.error);
+          kodeAktif.innerText = "ERR";
+        } else {
+          kodeAktif.innerText = "ERR";
+        }
+      })
+      .withFailureHandler(function (err) {
+        console.error("❌ Error GAS:", err);
+        kodeAktif.innerText = "ERR";
+      })
+      .getActiveCode();
+  };
+
+  popupKode.onclick = function () {
+    popupKode.style.display = "none";
+  };
+
+  boxKode.onclick = function (e) {
+    e.stopPropagation();
   };
 
 });
