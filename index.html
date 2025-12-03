@@ -339,16 +339,35 @@
   transform: scale(0.93);
 }
     
+/* ===============================
+   MODE KOMPAK TANPA MERUSAK FONT
+   =============================== */
 body {
-  overflow: hidden; /* pastikan tidak ada scroll */
+  overflow: hidden;
 }
 
-/* Semua konten SETELAH search bar dikompres */
-.searchWrap ~ * {
-  transform: scaleY(0.85);
-  transform-origin: top;
+/* Kompres vertikal via spacing, BUKAN scale */
+* {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
+/* Kompres tinggi antar elemen */
+.container,
+.card,
+.section,
+.row,
+.panel {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+}
+
+/* Rapikan jarak teks tanpa mengecilkan font */
+p, div, span, label {
+  line-height: 1.1;
+}
 
   </style>
 </head>
@@ -1019,6 +1038,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
 
