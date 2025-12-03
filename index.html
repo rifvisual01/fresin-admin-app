@@ -338,6 +338,26 @@
 .btnAction:active {
   transform: scale(0.93);
 }
+    /* ===============================
+   MODE KOMPAK AMAN (TANPA SCALE & TANPA FONT GEPENG)
+   =============================== */
+html, body {
+  overflow: hidden;   /* hilangkan scroll */
+}
+
+/* Padatkan SEMUA elemen secara vertikal */
+* {
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+/* Rapikan jarak teks tanpa mengecilkan font */
+p, div, span, label, button {
+  line-height: 1.15;
+}
+
     
 /* ===============================
    KOMPRES TINGGI KOLOM UTAMA
@@ -1055,6 +1075,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
 
