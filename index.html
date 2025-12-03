@@ -340,34 +340,25 @@
 }
     
 /* ===============================
-   MODE KOMPAK TANPA MERUSAK FONT
+   MODE KOMPAK AMAN (TANPA SCALE & TANPA FONT GEPENG)
    =============================== */
-body {
-  overflow: hidden;
+html, body {
+  overflow: hidden;   /* hilangkan scroll */
 }
 
-/* Kompres vertikal via spacing, BUKAN scale */
+/* Padatkan SEMUA elemen secara vertikal */
 * {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-/* Kompres tinggi antar elemen */
-.container,
-.card,
-.section,
-.row,
-.panel {
-  padding-top: 6px !important;
-  padding-bottom: 6px !important;
-  margin-top: 6px !important;
-  margin-bottom: 6px !important;
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
 }
 
 /* Rapikan jarak teks tanpa mengecilkan font */
-p, div, span, label {
-  line-height: 1.1;
+p, div, span, label, button {
+  line-height: 1.15;
 }
+
 
   </style>
 </head>
@@ -1038,6 +1029,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
 
