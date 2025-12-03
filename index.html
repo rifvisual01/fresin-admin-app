@@ -338,6 +338,16 @@
 .btnAction:active {
   transform: scale(0.93);
 }
+    
+body {
+  overflow: hidden; /* pastikan tidak ada scroll */
+}
+
+/* Semua konten SETELAH search bar dikompres */
+.searchWrap ~ * {
+  transform: scaleY(0.85);
+  transform-origin: top;
+}
 
 
   </style>
@@ -1009,6 +1019,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
 
