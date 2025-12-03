@@ -340,24 +340,50 @@
 }
     
 /* ===============================
-   MODE KOMPAK AMAN (TANPA SCALE & TANPA FONT GEPENG)
+   KOMPRES TINGGI KOLOM UTAMA
    =============================== */
-html, body {
-  overflow: hidden;   /* hilangkan scroll */
+
+/* Semua panel utama (putih) */
+.container > div {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
 }
 
-/* Padatkan SEMUA elemen secara vertikal */
-* {
-  margin-top: 4px !important;
-  margin-bottom: 4px !important;
-  padding-top: 6px !important;
-  padding-bottom: 6px !important;
+/* Box-box dalam Data Member & Statistik */
+.container div div {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
 }
 
-/* Rapikan jarak teks tanpa mengecilkan font */
-p, div, span, label, button {
-  line-height: 1.2;
+/* Judul section (Data Member, Statistik Member, Aksi Member) */
+h2, h3 {
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
 }
+/* ===============================
+   FRAME FOTO AGAR PROPORSIONAL
+   =============================== */
+
+/* Container foto kiri */
+.foto, 
+.foto-container,
+.preview,
+#previewFoto,
+img {
+  object-fit: cover;
+}
+
+/* Jika ada div pembungkus foto */
+.foto-container,
+.preview,
+#previewFoto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 
   </style>
@@ -1029,6 +1055,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
 
