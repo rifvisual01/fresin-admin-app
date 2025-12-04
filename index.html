@@ -117,26 +117,26 @@
   width: 100%;
 }
 
+/* FRAME FOTO – versi pendek & tanpa frame ganda */
 #memberAvatar {
   width: 100%;
-  height: 520px;              /* ✅ FOTO BESAR */
+  height: 380px;            /* ✅ kolom tidak terlalu panjang */
   background: white;
-  border-radius: 20px;
+  border-radius: 14px;
   overflow: hidden;
 
   display: flex;
-  align-items: center;        /* ✅ TENGAH VERTIKAL */
-  justify-content: center;    /* ✅ TENGAH HORIZONTAL */
-
-  padding: 8px;               /* ✅ BORDER BIRU TINGGAL TIPIS */
+  align-items: center;
+  justify-content: center;
+  /* ❌ TIDAK ADA padding di sini, supaya tidak muncul frame kecil di dalam */
 }
 
 #memberAvatar img {
   width: 100%;
   height: 100%;
-  object-fit: cover;         /* ✅ TIDAK GEPEK */
-  border-radius: 14px;
+  object-fit: cover;        /* ✅ foto penuh, tidak gepeng */
 }
+
 
     .field {
   background:#E5F4FF;
@@ -1086,6 +1086,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
 
