@@ -497,10 +497,13 @@
       </div>
     </div>
 
-    <div class="history" id="historyArea">
-      <div style="font-weight:700;margin-bottom:8px;">Riwayat Terakhir</div>
-      <div id="historyList">Tidak ada riwayat</div>
-    </div>
+    <div class="history" id="historyArea" style="padding:10px 12px">
+  <div style="font-weight:700;margin-bottom:4px;font-size:14px;">
+    Riwayat Terakhir
+  </div>
+  <div id="historyList">Tidak ada riwayat</div>
+</div>
+
   </div>
 
 </div>
@@ -714,17 +717,33 @@ function showMemberLoading() {
 }
 
   function renderHistory(list) {
-    const box = document.getElementById('historyList');
-    box.innerHTML = '';
-    if (!list.length) { box.innerHTML = 'Tidak ada riwayat'; return; }
-    list.forEach((it, i) => {
-      const div = document.createElement('div');
-      div.className = 'historyItem';
-      div.innerHTML = '<div><strong>' + (i+1) + '. ' + safe(it.aksi) + '</strong></div>' +
-                      '<div style="color:#777">' + safe(it.timestamp) + ' — Jumlah: ' + (it.jumlah||0) + '</div>';
-      box.appendChild(div);
-    });
+  const box = document.getElementById('historyList');
+  box.innerHTML = '';
+  if (!list.length) { 
+    box.innerHTML = '<div style="font-size:12px;color:#777">Tidak ada riwayat</div>'; 
+    return; 
   }
+
+  list.forEach((it, i) => {
+    const div = document.createElement('div');
+    div.className = 'historyItem';
+
+    div.style.marginBottom = '6px';      // ✅ JARAK ANTAR ITEM DIPERKECIL
+    div.style.fontSize = '12px';         // ✅ FONT DIPERKECIL
+    div.style.lineHeight = '1.3';        // ✅ BARIS DIRAPATKAN
+
+    div.innerHTML =
+      '<div style="font-weight:600;font-size:13px">' +
+      (i+1) + '. ' + safe(it.aksi) + 
+      '</div>' +
+      '<div style="color:#777;font-size:11px">' +
+      safe(it.timestamp) + ' — Jumlah: ' + (it.jumlah||0) + 
+      '</div>';
+
+    box.appendChild(div);
+  });
+}
+
 
   // notif
   function showNotif(text) {
@@ -1069,6 +1088,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
 
