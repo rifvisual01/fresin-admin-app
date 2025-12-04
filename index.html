@@ -364,26 +364,28 @@
   font-size: 14px !important;
 }
 
- /* ==========================================
-   FORCE COMPACT MODE — PASTI BERHASIL
-   ========================================== */
+/* ================================
+   COMPACT UI FINAL - OVERRIDE FIX
+   ================================ */
 
-/* SEMUA KOLOM PUTIH */
+/* HEADER BIRU (DATA, STATISTIK, AKSI) */
+.title,
+.header-title,
+.section-title {
+  padding: 6px 12px !important;
+  font-size: 15px !important;
+  border-radius: 12px !important;
+  margin-bottom: 6px !important;
+}
+
+/* KOLOM PUTIH UTAMA (FOTO, DATA, STATISTIK) */
 .left, .middle, .right {
-  padding-top: 6px !important;
-  padding-bottom: 6px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
   min-height: unset !important;
 }
 
-/* HEADER BIRU */
-.title {
-  padding: 8px 14px !important;
-  margin-bottom: 6px !important;
-  font-size: 16px !important;
-  border-radius: 12px !important;
-}
-
-/* FIELD DATA */
+/* FIELD DATA MEMBER */
 .field {
   padding: 6px 10px !important;
   margin-bottom: 6px !important;
@@ -392,22 +394,65 @@
 
 .label {
   font-size: 10px !important;
-  margin-bottom: 1px !important;
+  margin-bottom: 2px !important;
 }
 
 .value {
   font-size: 14px !important;
-  margin-top: 1px !important;
+  line-height: 1.2 !important;
 }
 
-/* AKSI MEMBER */
+/* JARAK ANTAR KOLOM AGAR LEBIH RAPAT */
+.main-grid,
+.main,
+.container-grid {
+  gap: 12px !important;
+}
+
+/* ================================
+   STATISTIK MEMBER (DIKECILKAN)
+   ================================ */
+
+.stat-box,
+.stat-item,
+.statistik-box {
+  padding: 8px 10px !important;
+  border-radius: 12px !important;
+  min-height: 58px !important;
+}
+
+.stat-box .label,
+.stat-item .label {
+  font-size: 11px !important;
+}
+
+.stat-box .value,
+.stat-item .value {
+  font-size: 14px !important;
+}
+
+/* ================================
+   RIWAYAT TERAKHIR DIPENDEKKAN
+   ================================ */
+
+.riwayat,
+.riwayat-box {
+  margin-top: 6px !important;
+  padding: 8px 10px !important;
+  font-size: 13px !important;
+}
+
+/* ================================
+   AKSI MEMBER DIPERKECIL
+   ================================ */
+
 .actions {
   margin-top: 8px !important;
   gap: 10px !important;
 }
 
 .action-btn {
-  padding: 10px 10px !important;
+  padding: 10px !important;
   border-radius: 14px !important;
 }
 
@@ -415,15 +460,12 @@
   font-size: 13px !important;
 }
 
-/* TOMBOL KUNING */
-.action-btn img {
-  width: 26px !important;
-  height: 26px !important;
-}
+/* ================================
+   FOTO AGAR TIDAK MENARIK KE BAWAH
+   ================================ */
 
-/* FOTO */
 .left {
-  max-height: 460px !important;
+  max-height: 430px !important;
 }
 
 .left img {
@@ -431,14 +473,6 @@
   object-fit: cover !important;
 }
 
-/* RIWAYAT */
-.riwayat {
-  margin-top: 6px !important;
-  padding-top: 6px !important;
-  padding-bottom: 6px !important;
-}
-
- 
 
   </style>
 </head>
@@ -1109,6 +1143,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
 
