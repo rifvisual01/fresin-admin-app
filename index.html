@@ -117,10 +117,26 @@
   width: 100%;
 }
 
+#memberAvatar {
+  width: 100%;
+  height: 520px;              /* ✅ FOTO BESAR */
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
 
+  display: flex;
+  align-items: center;        /* ✅ TENGAH VERTIKAL */
+  justify-content: center;    /* ✅ TENGAH HORIZONTAL */
 
-    #memberAvatar { width:100%; height:230px; background:#fdf6e8; border-radius:14px; overflow:hidden; display:flex; align-items:center; justify-content:center; margin-bottom:18px }
-    #memberAvatar img { width:100%; height:100%; object-fit:cover }
+  padding: 8px;               /* ✅ BORDER BIRU TINGGAL TIPIS */
+}
+
+#memberAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* ✅ TIDAK GEPEK */
+  border-radius: 14px;
+}
 
     .field {
   background:#E5F4FF;
@@ -253,27 +269,6 @@
   flex-direction: column;
 }
 
-
-#memberAvatar {
-  width: 100%;
-  height: 380px;          /* ✅ DIPENDEKKAN dari 540px */
-  background: white;
-  border-radius: 14px;
-  overflow: hidden;
-
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#memberAvatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  border-radius: 14px;
-}
 
 /* BIAR SPINNER BISA POSISI TENGAH */
 #memberAvatar {
@@ -730,16 +725,16 @@ function showMemberLoading() {
     div.className = 'historyItem';
 
     // ✅ PENGECILAN MAKSIMAL AMAN
-    div.style.marginBottom = '3px';     // sebelumnya 6px → sekarang 3px
-    div.style.fontSize = '11px';        // sebelumnya 12px → sekarang 11px
-    div.style.lineHeight = '1.15';      // sebelumnya 1.3 → sekarang 1.15
-    div.style.padding = '2px 0';        // rapat atas bawah
+   div.style.marginBottom = '5px';   // ✅ DIISI RUANG KOSONGNYA
+div.style.fontSize = '13px';      // ✅ LEBIH TERBACA
+div.style.lineHeight = '1.3';     // ✅ TIDAK TERLALU RAPAT
+div.style.padding = '3px 0';      // ✅ AMAN UNTUK 4 ITEM
 
     div.innerHTML =
-      '<div style="font-weight:600;font-size:12px; margin-bottom:1px">' +
+      '<div style="font-weight:600;font-size:14px; margin-bottom:2px">' +
         (i+1) + '. ' + safe(it.aksi) + 
       '</div>' +
-      '<div style="color:#777;font-size:10px; line-height:1.1">' +
+      '<div style="color:#777;font-size:12px; line-height:1.2">' +
         safe(it.timestamp) + ' — Jumlah: ' + (it.jumlah||0) + 
       '</div>';
 
@@ -1091,6 +1086,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
 
