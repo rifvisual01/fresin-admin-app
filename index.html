@@ -340,29 +340,75 @@
 }
 
     /* ===============================
-   RAPATKAN KOLOM: NAMA - WA - TANGGAL
-   (KHUSUS .field DATA MEMBER)
+   HAPUS RUANG KOSONG ATAS HALAMAN
    =============================== */
 
-/* Perkecil tinggi box tiap field */
-.middle .field {
-  padding: 6px 10px !important;   /* sebelumnya 12px 16px */
-  margin-bottom: 6px !important; /* sebelumnya 14px */
+body {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
 }
 
-/* Perkecil jarak label ke value */
-.middle .field .label {
-  font-size: 10px;     /* sebelumnya 11px */
-  letter-spacing: 0.5px;
-  margin-bottom: 2px;
+.container {
+  padding-top: 10px !important;
 }
 
-/* Perkecil jarak atas teks value */
-.middle .field .value {
-  margin-top: 2px !important;  /* sebelumnya 6px */
-  font-size: 14px;             /* sebelumnya 18px (opsional) */
+    /* ===============================
+   RINGKASKAN SEARCH BAR & NAIKKAN
+   =============================== */
+
+.searchWrap {
+  margin-top: 0 !important;
+  margin-bottom: 12px !important;
 }
 
+.search {
+  padding: 8px 12px !important;
+  min-height: unset !important;
+}
+
+.search input {
+  height: 38px !important;
+  font-size: 14px !important;
+}
+
+#searchBtn {
+  height: 38px !important;
+  padding: 0 16px !important;
+  font-size: 14px !important;
+}
+/* ===============================
+   KOMPAKKAN SEMUA KOLOM
+   =============================== */
+
+.left, .middle, .right {
+  margin-top: 0 !important;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+.main {
+  gap: 14px !important;
+}
+
+.field {
+  padding: 7px 12px !important;
+  margin-bottom: 6px !important;
+}
+
+.label {
+  margin-bottom: 2px !important;
+  font-size: 10px !important;
+}
+
+.value {
+  margin-top: 2px !important;
+  font-size: 16px !important;
+}
+
+    .title {
+  padding: 9px 14px !important;
+  margin-bottom: 10px !important;
+  font-size: 18px !important;
+}
 
   </style>
 </head>
@@ -1033,6 +1079,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
 
