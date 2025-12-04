@@ -365,73 +365,79 @@
 }
 
  /* ==========================================
-   FINAL SUPER COMPACT MODE
-   TARGET: 3 KOLOM SETINGGI GARIS HITAM
+   FORCE COMPACT MODE — PASTI BERHASIL
    ========================================== */
 
-/* 1. SEMUA KOLOM (FOTO, DATA, STATISTIK) */
+/* SEMUA KOLOM PUTIH */
 .left, .middle, .right {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  min-height: unset;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+  min-height: unset !important;
 }
 
-/* 2. HEADER BIRU (DATA & STATISTIK) */
+/* HEADER BIRU */
 .title {
-  padding: 7px 14px;
-  margin-bottom: 6px;
-  font-size: 16.5px;
-  border-radius: 12px;
+  padding: 8px 14px !important;
+  margin-bottom: 6px !important;
+  font-size: 16px !important;
+  border-radius: 12px !important;
 }
 
-/* 3. FIELD DATA (NAMA, WA, TGL, DLL) */
+/* FIELD DATA */
 .field {
-  padding: 6px 10px;
-  margin-bottom: 5px;
-  border-radius: 10px;
+  padding: 6px 10px !important;
+  margin-bottom: 6px !important;
+  border-radius: 10px !important;
 }
 
 .label {
-  font-size: 10px;
-  margin-bottom: 1px;
+  font-size: 10px !important;
+  margin-bottom: 1px !important;
 }
 
 .value {
-  font-size: 15px;
-  margin-top: 1px;
+  font-size: 14px !important;
+  margin-top: 1px !important;
 }
 
-/* 4. AKSI MEMBER (TOMBOL KUNING) */
+/* AKSI MEMBER */
 .actions {
-  margin-top: 8px;
-  gap: 10px;
+  margin-top: 8px !important;
+  gap: 10px !important;
 }
 
 .action-btn {
-  padding: 10px 10px;
-  border-radius: 14px;
+  padding: 10px 10px !important;
+  border-radius: 14px !important;
 }
 
 .action-btn span {
-  font-size: 13px;
+  font-size: 13px !important;
 }
 
-/* 5. KOLOM FOTO DIPAKSA IKUT PENDEK */
+/* TOMBOL KUNING */
+.action-btn img {
+  width: 26px !important;
+  height: 26px !important;
+}
+
+/* FOTO */
 .left {
-  max-height: 460px;
+  max-height: 460px !important;
 }
 
 .left img {
-  object-fit: cover;
-  max-height: 100%;
+  max-height: 100% !important;
+  object-fit: cover !important;
 }
 
-/* 6. RIWAYAT TERAKHIR */
+/* RIWAYAT */
 .riwayat {
-  padding-top: 6px;
-  padding-bottom: 6px;
-  margin-top: 6px;
+  margin-top: 6px !important;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
 }
+
  
 
   </style>
@@ -1103,6 +1109,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
 
